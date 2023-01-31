@@ -13,7 +13,9 @@ sudo apt-get install perl libmediawiki-api-perl
 
 ## Usage
 
+```
 piki-dl.pl [category name]
+```
 
 ### Examples
 
