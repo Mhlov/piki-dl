@@ -8,7 +8,7 @@
 #      CREATED: 31-01-2023 01:22
 #      LICENSE: Artistic License 1.0
 #===============================================================================
-use Modern::Perl '2020';
+use v5.10;
 use utf8;
 use strict;
 use autodie;
@@ -29,7 +29,30 @@ use Data::Printer;              # Usage: p @array;
 
 use MediaWiki::API;         # https://metacpan.org/pod/MediaWiki::API
 
-my $version = '0.1';
+
+sub help {
+    print <<"_HELP_";
+piki-dl.pl
+    Simple downloader from Wikimedia Commons by category.
+
+SYNOPSIS
+    piki-dl.pl [category name]
+
+EXAMPLES
+    piki-dl.pl 'Dioscuri statue from Baiae'
+
+DEPENDENCIES
+    MediaWiki::API
+_HELP_
+}
+
+
+sub get_api {
+    my $mw = MediaWiki::API->new();
+    $mw->{config}->{api_url} = 'https://commons.wikimedia.org/w/api.php';
+    return $mw;
+}
+
 
 sub save_file {
     my $title = shift;
@@ -53,27 +76,6 @@ sub save_file {
     close $fh or die $!;
 }
 
-sub get_api {
-    my $mw = MediaWiki::API->new();
-    $mw->{config}->{api_url} = 'https://commons.wikimedia.org/w/api.php';
-    return $mw;
-}
-
-sub help {
-    print <<"_HELP_";
-piki-dl.pl
-    Simple downloader from Wikimedia Commons by category.
-
-SYNOPSIS
-    piki-dl.pl [category name]
-
-EXAMPLES
-    piki-dl.pl 'Dioscuri statue from Baiae'
-
-DEPENDENCIES
-    MediaWiki::API
-_HELP_
-}
 
 sub main {
     my $category = shift;
